@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.o2o.dao.ShopMapper">
+    <resultMap id="BaseResultMap" type="com.o2o.pojo.Area">
+        <constructor>
+            <idArg column="shop_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="user_id" jdbcType="Integer" javaType="java.lang.Integer"/>
+            <arg column="area_id" jdbcType="Integer" javaType="java.lang.Integer"/>
+            <arg column="shop_category_id" jdbcType="Integer" javaType="java.lang.Integer"/>
+            <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="shop_desc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="shop_addr" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="shop_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="priority" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="enable_status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="advice" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        shop_id, user_id, area_id, shop_category_id, shop_name, shop_desc, shop_addr, phone, shop_img,  priority, enable_status, advice, create_time, update_time
+    </sql>
+
+    <insert id="insertShop" parameterType="com.o2o.pojo.Shop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId">
+        INSERT INTO
+        o2o_shop(user_id, area_id, shop_category_id, shop_name, shop_desc, shop_addr, phone, shop_img,  priority, enable_status, advice, create_time, update_time)
+        VALUES ( #{userId}, #{areaId}, #{shopCategoryId}, #{shopName}, #{shopDesc},
+                 #{shopAddr}, #{phone}, #{shopImg}, #{priority}, #{enableStatus}, #{advice}, now(), now() )
+    </insert>
+
+    <update id="updateShop" parameterType="Shop">
+        UPDATE o2o_shop
+        <set>
+            <if test="areaId != null">
+                area_id = #{areaId},
+            </if>
+            <if test="shopCategoryId != null">
+                shop_category_id = #{shopCategoryId},
+            </if>
+            <if test="shopName != null">
+                shop_name = #{shopName},
+            </if>
+            <if test="shopDesc != null">
+                shop_desc = #{shopDesc},
+            </if>
+            <if test="shopAddr != null">
+                shop_addr = #{shopAddr},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="shopImg != null">
+                shop_img = #{shopImg},
+            </if>
+            <if test="priority != null">
+                priority = #{priority},
+            </if>
+            <if test="enableStatus != null">
+                enable_status = #{enableStatus},
+            </if>
+            <if test="advice != null">
+                advice = #{advice},
+            </if>
+            <if test="updateTime != null">
+                update_time = now()
+            </if>
+        </set>
+        where shop_id = #{shopId}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!-- appender：负责写日志的组件。 ConsoleAppender 把日志输出到控制台 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoding>UTF-8</encoding>
+        <!-- 对日志进行格式化 -->
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="o2o" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>D:/Tomcat/apache-tomcat-9.0.0.M21/logs/mmall.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/Tomcat/apache-tomcat-9.0.0.M21/logs/o2o.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <!-- 如果是true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true -->
+            <append>true</append>
+            <!-- 最大的存储时间为10天 -->
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>D:/Tomcat/apache-tomcat-9.0.0.M21/logs/o2oError.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/Tomcat/apache-tomcat-9.0.0.M21/logs/o2oError.log.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <append>true</append>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- logger用来设置某一个包或具体的某一个类的日志打印级别、以及指定<appender>
+        name:指定受此logger约束的某一个包或者具体的某一个类
+        addtivity: 是否向上级logger传递打印信息
+     -->
+    <logger name="com.o2o" additivity="false" level="INFO">
+        <appender-ref ref="mmall"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <!-- mybatis log 日志 -->
+    <logger name="com.o2o.dao" level="DEBUG"/>
+
+    <!-- root是所有logger的上级 -->
+    <root level="DEBUG">
+        <appender-ref ref="console"/>
+        <appender-ref ref="error"/>
+    </root>
+
+    <!-- logback级别排序为：TRACE < DEBUG < INFO < WARN < ERROR -->
+</configuration>
