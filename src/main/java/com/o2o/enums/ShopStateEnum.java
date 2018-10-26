@@ -4,11 +4,13 @@ package com.o2o.enums;
  * Create By wz on 2018/10/26
  */
 public enum ShopStateEnum {
-    CEHCK(0, "审核中"),
+    CHECK(0, "审核中"),
     OFFLINE(-1, "非法店铺"),
     SUCCESS(1, "操作成功"),
     PASS(2, "通过认证"),
-    INNER_ERROR(-2, "系统内部错误");
+    INNER_ERROR(-2, "系统内部错误"),
+    NULL_SHOP(-3,"shop信息为空");
+
 
     private int state;
     private String stateInfo;

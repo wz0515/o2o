@@ -3,10 +3,10 @@
 <mapper namespace="com.o2o.dao.ShopMapper">
     <resultMap id="BaseResultMap" type="com.o2o.pojo.Area">
         <constructor>
-            <idArg column="shop_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="user_id" jdbcType="Integer" javaType="java.lang.Integer"/>
-            <arg column="area_id" jdbcType="Integer" javaType="java.lang.Integer"/>
-            <arg column="shop_category_id" jdbcType="Integer" javaType="java.lang.Integer"/>
+            <idArg column="shop_id" jdbcType="INTEGER" javaType="java.lang.Long"/>
+            <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="area_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="shop_category_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="shop_desc" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="shop_addr" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -31,7 +31,7 @@
                  #{shopAddr}, #{phone}, #{shopImg}, #{priority}, #{enableStatus}, #{advice}, now(), now() )
     </insert>
 
-    <update id="updateShop" parameterType="Shop">
+    <update id="updateShop" parameterType="com.o2o.pojo.Shop">
         UPDATE o2o_shop
         <set>
             <if test="areaId != null">
