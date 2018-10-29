@@ -17,6 +17,9 @@ public class ShopMapperTest extends BaseTest {
     @Test
     public void testInsertShop(){
         Shop shop = new Shop();
+        shop.setUserId(1);
+        shop.setAreaId(1);
+        shop.setShopCategoryId(1);
         shop.setShopName("一稀饭");
         shop.setEnableStatus(0);
         int count = shopMapper.insertShop(shop);

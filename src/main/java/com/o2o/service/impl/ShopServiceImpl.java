@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  * Create By wz on 2018/10/26
@@ -24,7 +24,7 @@ public class ShopServiceImpl implements IShopService {
     @Autowired
     private ShopMapper shopMapper;
 
-    public ShopExecution addShop(Shop shop, File shopImg) {
+    public ShopExecution addShop(Shop shop, InputStream shopImg, String filename) {
         if (shop == null) {
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
@@ -34,7 +34,7 @@ public class ShopServiceImpl implements IShopService {
             if (resultCount > 0) {
                 if (shopImg != null) {
                     //存储店铺图片
-                    addShopImg(shop, shopImg);
+                    addShopImg(shop, shopImg, filename);
                     //更新店铺图片的地址
                     resultCount = shopMapper.updateShop(shop);
                     if (resultCount <= 0) {
@@ -47,13 +47,13 @@ public class ShopServiceImpl implements IShopService {
         } catch (Exception e) {
             throw new ShopOptException("addShop error : " + e.getMessage());
         }
-        return new ShopExecution(ShopStateEnum.CHECK,shop);
+        return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
 
-    private void addShopImg(Shop shop, File shopImg) {
+    private void addShopImg(Shop shop, InputStream shopImg, String filename) {
         //获取shop图片的相对路径
         String dest = PathUtil.getShopImgPath(shop.getShopId());
-        String shopImgAddr = ImageUtil.generateThumbnai(shopImg,dest);
+        String shopImgAddr = ImageUtil.generateThumbnai(shopImg, filename, dest);
         shop.setShopImg(shopImgAddr);
     }
 

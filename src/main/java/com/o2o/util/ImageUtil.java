@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -22,11 +23,11 @@ public class ImageUtil {
     private static final Random random = new Random();
 
     //生成缩略图
-    public static String generateThumbnai(File thumbnail, String targetAddr) {
+    public static String generateThumbnai(InputStream thumbnail, String filename, String targetAddr) {
         //获取随机文件名
         String randomFileName = getRandomFileName();
         //扩展名
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(filename);
         //targetAddr有时不存在，所以要创建目录
         makeDirPath(targetAddr);
         String relativeAddr = targetAddr + randomFileName + extension;
@@ -49,16 +50,15 @@ public class ImageUtil {
     }
 
     //生成随机文件名，当前年、月、日、小时、分、秒加上五位随机数
-    private static String getRandomFileName() {
+    public static String getRandomFileName() {
         int randomNum = random.nextInt(90000) + 10000;
         String currentTime = sdf.format(new Date());
         return currentTime + randomNum;
     }
 
     //获取输入文件流的扩展名
-    private static String getFileExtension(File file) {
-        String fileName = file.getName();
-        return fileName.substring(fileName.lastIndexOf("."));
+    private static String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf("."));
     }
 
     //创建目标路径所涉及到的目录
