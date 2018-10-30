@@ -9,6 +9,7 @@ import com.o2o.pojo.ShopCategory;
 import com.o2o.service.IAreaService;
 import com.o2o.service.IShopCategoryService;
 import com.o2o.service.IShopService;
+import com.o2o.util.CodeUtil;
 import com.o2o.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,11 +71,11 @@ public class ShopController {
     public Map<String, Object> registerShop(HttpServletRequest request) {
         Map<String, Object> shopMap = new HashMap<>();
         //1.接受并转化相应的参数，包括店铺信息和图片信息
-        String shopStr = RequestUtil.getString(request, "shopStr");
+        String shopInfo = RequestUtil.getString(request, "shopInfo");
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
         try {
-            shop = mapper.readValue("shopStr", Shop.class);
+            shop = mapper.readValue(shopInfo, Shop.class);
         } catch (IOException e) {
             shopMap.put("success", false);
             shopMap.put("errorMsg", e.getMessage());
@@ -98,11 +99,18 @@ public class ShopController {
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
+
             if (se.getState() == ShopStateEnum.CHECK.getState()) {
                 shopMap.put("succrss", true);
             } else {
                 shopMap.put("success", false);
                 shopMap.put("errorMsg", se.getStateInfo());
+            }
+
+            //验证码
+            if (!CodeUtil.checkVerifyCode(request)) {
+                shopMap.put("success",false);
+                shopMap.put("eroorMsg","验证码错误");
             }
             return shopMap;
 

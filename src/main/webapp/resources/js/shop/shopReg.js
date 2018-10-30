@@ -27,7 +27,7 @@ $(function () {
         //获取表单数据
         $("#submit").click(function () {
             var shop = {};
-            shop.shopName = $("#shopName").value();
+            shop.shopName = $("#shopName").val();
             shop.shopCategory = {
                 shopCategoryId: $("#shopCategory").find("option").not(function () {
                     return !this.selected;
@@ -38,21 +38,21 @@ $(function () {
                     return !this.selected;
                 }).data("id")
             };
-            shop.shopAddr = $("#shopAddr").value();
-            shop.phone = $("#phone").value();
-            shop.shopDesc = $("#shopDesc").value();
+            shop.shopAddr = $("#shopAddr").val();
+            shop.phone = $("#phone").val();
+            shop.shopDesc = $("#shopDesc").val();
             //获取图片的文件流
             var shopImg = $("#shopImg")[0].files[0];
             //验证码
-            var verifyCodeActual = $("#kaptcha").value();
+            var verifyCodeActual = $("#kaptcha").val();
             if (verifyCodeActual == null) {
                 $.toast("请输入验证码");
                 return;
             }
             //接收表单数据
-            var formData = new formData();
+            var formData = new FormData();
             formData.append("shopImg", shopImg);
-            formData.append("shopStr", JSON.stringify(shop));
+            formData.append("shopInfo", JSON.stringify(shop));
             formData.append("verifyCodeActual",verifyCodeActual);
 
             //提交到后台
@@ -69,6 +69,7 @@ $(function () {
                     } else {
                         $.toast("提交失败:"+data.errorMsg);
                     }
+                    $("#kaptchaImg").click();   //每次提交都会更改验证码
                 }
             });
 
