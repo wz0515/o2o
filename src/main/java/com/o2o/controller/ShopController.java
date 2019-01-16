@@ -70,6 +70,12 @@ public class ShopController {
     @ResponseBody
     public Map<String, Object> registerShop(HttpServletRequest request) {
         Map<String, Object> shopMap = new HashMap<>();
+        //验证码
+        if (!CodeUtil.checkVerifyCode(request)) {
+            shopMap.put("success",false);
+            shopMap.put("eroorMsg","验证码错误");
+            return shopMap;
+        }
         //1.接受并转化相应的参数，包括店铺信息和图片信息
         String shopInfo = RequestUtil.getString(request, "shopInfo");
         ObjectMapper mapper = new ObjectMapper();
@@ -105,12 +111,6 @@ public class ShopController {
             } else {
                 shopMap.put("success", false);
                 shopMap.put("errorMsg", se.getStateInfo());
-            }
-
-            //验证码
-            if (!CodeUtil.checkVerifyCode(request)) {
-                shopMap.put("success",false);
-                shopMap.put("eroorMsg","验证码错误");
             }
             return shopMap;
 

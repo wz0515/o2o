@@ -45,15 +45,15 @@ $(function () {
             var shopImg = $("#shopImg")[0].files[0];
             //验证码
             var verifyCodeActual = $("#kaptcha").val();
-            if (verifyCodeActual == null) {
+            if (!verifyCodeActual) {
                 $.toast("请输入验证码");
                 return;
             }
             //接收表单数据
             var formData = new FormData();
-            formData.append("shopImg", shopImg);
-            formData.append("shopInfo", JSON.stringify(shop));
-            formData.append("verifyCodeActual",verifyCodeActual);
+            formData.append('shopImg', shopImg);
+            formData.append('shopInfo', JSON.stringify(shop));
+            formData.append('verifyCodeActual',verifyCodeActual);
 
             //提交到后台
             $.ajax({
